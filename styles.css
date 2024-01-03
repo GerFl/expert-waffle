@@ -1,7 +1,7 @@
 html {
     box-sizing: border-box;
     font-size: 62.5%;
-    /**Reset para REMS - 62.5% = 10px de 16px*/
+    /** REMS reset - 62.5% = 10px de 16px */
     background-color: #131212;
     color: aliceblue;
 }

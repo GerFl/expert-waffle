@@ -1,14 +1,13 @@
-Definición de objetos:
+Object definition:
 
 {
     {
-        tipo,
-        coordenadas,
-        direccion,
-        precio,
-        descripción,
-        contacto,
-        imagen
+        type,
+        latitude,
+        longitude,
+        value,
+        description,
+        contact
     },
     { ... }
 }
