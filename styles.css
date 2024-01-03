@@ -1,0 +1,27 @@
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+    /**Reset para REMS - 62.5% = 10px de 16px*/
+    background-color: #131212;
+    color: aliceblue;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+/* * {
+    outline: 1px solid pink;
+} */
+
+#map { 
+    margin: 2rem auto;
+    width: 100rem;
+    height: 80vh;
+}
+
+div.leaflet-popup-content {
+    font-size: 1rem;
+}

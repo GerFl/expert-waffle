@@ -1,0 +1,14 @@
+Definición de objetos:
+
+{
+    {
+        tipo,
+        coordenadas,
+        direccion,
+        precio,
+        descripción,
+        contacto,
+        imagen
+    },
+    { ... }
+}
