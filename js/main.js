@@ -70,7 +70,16 @@ function sketchMap() {
 
     // Leases
     leases.forEach(lease => {
-        leasesMapObj.push(L.marker([lease.latitude, lease.longitude]));
+        leasesMapObj.push(
+            L.marker([lease.latitude, lease.longitude])
+            .bindTooltip(`
+                ${lease.value}
+                <br>
+                ${lease.address}
+                <br>
+                ${lease.contact}
+            `)
+        );
     });
 
     (leasesGroup) ? leasesGroup.remove() : '' ;
@@ -78,7 +87,16 @@ function sketchMap() {
 
     // Sales
     sales.forEach(sale => {
-        salesMapObj.push(L.marker([sale.latitude, sale.longitude]),);
+        salesMapObj.push(
+            L.marker([sale.latitude, sale.longitude])
+            .bindTooltip(`
+                ${sale.value}
+                <br>
+                ${sale.address}
+                <br>
+                ${sale.contact}
+            `)
+        );
     });
 
     (salesGroup) ? salesGroup.remove() : '' ;

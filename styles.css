@@ -22,6 +22,11 @@ html {
     height: 80vh;
 }
 
-div.leaflet-popup-content {
-    font-size: 1rem;
+div.leaflet-tooltip-pane {
+    text-align: center;
+    font-size: 1.4rem;
+}
+
+div.leaflet-tooltip-content {
+    display: none;
 }
