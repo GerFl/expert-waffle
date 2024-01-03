@@ -9,8 +9,11 @@
     <title>Expert-waffle</title>
 </head>
 <body>
-    <input type="file" name="csv-file" id="csv-file" accept=".csv">
-    <input type="button" value="Read data" onclick="fetchFileData()">
+    <div class="actions">
+        <input type="file" name="csv-file" id="csv-file" accept=".csv">
+        <input type="button" value="Read data" onclick="fetchFileData()">
+    </div>
+
     <div id="map"></div>
 
     <!-- Make sure you put this AFTER Leaflet's CSS -->

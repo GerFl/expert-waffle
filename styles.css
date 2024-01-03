@@ -2,7 +2,7 @@ html {
     box-sizing: border-box;
     font-size: 62.5%;
     /** REMS reset - 62.5% = 10px de 16px */
-    background-color: #131212;
+    background-color: #131313;
     color: aliceblue;
 }
 
@@ -12,9 +12,16 @@ html {
     box-sizing: inherit;
 }
 
-/* * {
-    outline: 1px solid pink;
-} */
+:root {
+    --small-font: 1.4rem;
+}
+
+input[type=file],
+input[type=button] {
+    height: 3rem;
+    cursor: pointer;
+    font-size: var(--small-font);
+}
 
 #map { 
     margin: 2rem auto;
@@ -22,11 +29,21 @@ html {
     height: 80vh;
 }
 
-div.leaflet-tooltip-pane {
-    text-align: center;
-    font-size: 1.4rem;
+.leaflet-popup-content {
+    font-size: var(--small-font);
 }
 
-div.leaflet-tooltip-content {
-    display: none;
+.leaflet-tooltip-pane {
+    text-align: center;
+    font-size: var(--small-font);
+}
+
+.leaflet-control-layers {
+    font-size: var(--small-font);
+}
+
+.actions {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 4rem 2rem;
 }
