@@ -24,7 +24,7 @@ import fetchFileData from './fetch-file.js';
             L.marker(e.latlng).addTo(map)
                 .bindPopup("You are within " + radius + " meters from this point").openPopup();
 
-            L.circle(e.latlng, radius).addTo(map);
+            L.circle(e.latlng, radius).setStyle({color: 'purple', fillColor: 'purple'}).addTo(map);
         }
 
         map.on('locationfound', onLocationFound);
