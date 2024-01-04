@@ -1,153 +1,50 @@
-// BEGIN
-const fileInput = document.getElementById("csv-file");
+import fetchFileData from './fetch-file.js';
 
-let properties = [];
-let leases = [];
-let sales = [];
-let vertexes = [];
+(function() {
+    "use strict";
+    document.addEventListener('DOMContentLoaded', function() {
 
-let leaseIcon = L.icon({
-    iconUrl: './../img/leaf-green.png',
-    shadowUrl: './../img/leaf-shadow.png',
+        //#region Map init and geolocation
+        // Map init
+        const map = L.map('map', {
+            zoom: 14
+        }).fitWorld();
 
-    iconSize:     [38, 95], // size of the icon
-    shadowSize:   [50, 64], // size of the shadow
-    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-    shadowAnchor: [4, 62],  // the same for the shadow
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-});
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
 
-let saleIcon = L.icon({
-    iconUrl: './../img/leaf-red.png',
-    shadowUrl: './../img/leaf-shadow.png',
+        // Geolocation
+        map.locate({setView: true, maxZoom: 16});
 
-    iconSize:     [38, 95], // size of the icon
-    shadowSize:   [50, 64], // size of the shadow
-    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-    shadowAnchor: [4, 62],  // the same for the shadow
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-});
+        function onLocationFound(e) {
+            let radius = e.accuracy;
 
-// Map init
-const map = L.map('map', {
-    center: [25.680858669916173, -100.30201005332778],
-    zoom: 14
-});
+            L.marker(e.latlng).addTo(map)
+                .bindPopup("You are within " + radius + " meters from this point").openPopup();
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '© OpenStreetMap'
-}).addTo(map);
+            L.circle(e.latlng, radius).addTo(map);
+        }
 
-//#region File handler
-function fetchFileData() {
-    const csv = fileInput.files[0];
-    const fr = new FileReader();
+        map.on('locationfound', onLocationFound);
 
-    fr.onload = function (e) {
-        // Read file data
-        const data = e.target.result;
+        function onLocationError(e) {
+            alert(e.message);
+        }
 
-        // Split by line break and store in array
-        let rows = data.split('\n');        
-        properties = [];
+        map.on('locationerror', onLocationError);
+        //#endregion Map init and geolocation
 
-        rows.forEach(row => {
-            let obj = row.split(',');
 
-            const property = {
-                type: obj[0],
-                latitude: obj[1],
-                longitude: obj[2],
-                address: obj[3],
-                value: obj[4],
-                description: obj[5],
-                contact: obj[6]
-            };
-
-            properties.push(property);
+        // BEGIN
+        const fileInput = document.getElementById('csv-file');
+        const readDataButton = document.getElementById('read-data-btn');
+        readDataButton.addEventListener('click', e => {
+            e.preventDefault();
+            fetchFileData(fileInput, map);
         });
-
-        leases = (properties.filter(x => x.type == "Lease"));
-        sales = properties.filter(x => x.type == "Sale");
-        vertexes = properties.filter(x => x.type == "Vertex");
         
-        sketchMap();
-    };
 
-    fr.readAsText(csv);
-}
-//#endregion File handler
-
-let searchArea;
-let layerControl;
-let leasesGroup;
-let salesGroup;
-
-function sketchMap() {
-
-    let leasesMapObj = [];
-    let salesMapObj = [];
-    let vertexesMapObj = [];
-
-    // Leases
-    leases.forEach(lease => {
-        leasesMapObj.push(
-            L.marker(
-                [lease.latitude, lease.longitude],
-                { icon: leaseIcon }
-            )
-            .bindTooltip(`
-                ${lease.value}
-                <br>
-                ${lease.address}
-                <br>
-                ${lease.contact}
-            `)
-        );
-    });
-
-    (leasesGroup) ? leasesGroup.remove() : '' ;
-    leasesGroup = L.layerGroup(leasesMapObj).addTo(map);
-
-    // Sales
-    sales.forEach(sale => {
-        salesMapObj.push(
-            L.marker(
-                [sale.latitude, sale.longitude],
-                { icon: saleIcon }
-            )
-            .bindTooltip(`
-                ${sale.value}
-                <br>
-                ${sale.address}
-                <br>
-                ${sale.contact}
-            `)
-        );
-    });
-
-    (salesGroup) ? salesGroup.remove() : '' ;
-    salesGroup = L.layerGroup(salesMapObj).addTo(map);
-
-    // Polygon
-    vertexes.forEach(vertex => {
-        vertexesMapObj.push([vertex.latitude, vertex.longitude]);
-    });
-
-    (searchArea) ? searchArea.remove() : '' ;
-    searchArea = L.polygon(vertexesMapObj).addTo(map);
-
-    map.fitBounds(searchArea.getBounds());
-    searchArea.bindPopup("Aquí asaltan.");
-    
-    // Layers control
-    let overlayMaps = {
-        "Lease": leasesGroup,
-        "Sale": salesGroup
-    };
-    
-    (layerControl) ? layerControl.remove() : '' ;
-    layerControl = L.control.layers(null, overlayMaps).addTo(map);
-    
-}
+    }); // DOM CONTENT LOADED
+})();
