@@ -6,6 +6,28 @@ let leases = [];
 let sales = [];
 let vertexes = [];
 
+let leaseIcon = L.icon({
+    iconUrl: './../img/leaf-green.png',
+    shadowUrl: './../img/leaf-shadow.png',
+
+    iconSize:     [38, 95], // size of the icon
+    shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+
+let saleIcon = L.icon({
+    iconUrl: './../img/leaf-red.png',
+    shadowUrl: './../img/leaf-shadow.png',
+
+    iconSize:     [38, 95], // size of the icon
+    shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+
 // Map init
 const map = L.map('map', {
     center: [25.680858669916173, -100.30201005332778],
@@ -71,7 +93,10 @@ function sketchMap() {
     // Leases
     leases.forEach(lease => {
         leasesMapObj.push(
-            L.marker([lease.latitude, lease.longitude])
+            L.marker(
+                [lease.latitude, lease.longitude],
+                { icon: leaseIcon }
+            )
             .bindTooltip(`
                 ${lease.value}
                 <br>
@@ -88,7 +113,10 @@ function sketchMap() {
     // Sales
     sales.forEach(sale => {
         salesMapObj.push(
-            L.marker([sale.latitude, sale.longitude])
+            L.marker(
+                [sale.latitude, sale.longitude],
+                { icon: saleIcon }
+            )
             .bindTooltip(`
                 ${sale.value}
                 <br>
