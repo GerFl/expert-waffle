@@ -50,6 +50,7 @@ function sketchMap(map, properties) {
                 { icon: leaseIcon }
             )
             .bindTooltip(`
+                <img class="marker-image" src="${lease.image}" alt="">
                 ${lease.value}
                 <br>
                 ${lease.address}
@@ -71,6 +72,7 @@ function sketchMap(map, properties) {
                 { icon: saleIcon }
             )
             .bindTooltip(`
+                <img class="marker-image" src="${sale.image}" alt="">
                 ${sale.value}
                 <br>
                 ${sale.address}

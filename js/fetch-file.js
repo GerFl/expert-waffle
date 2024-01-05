@@ -26,7 +26,8 @@ function fetchFileData(fileInput, map) {
                 address: obj[3],
                 value: obj[4],
                 description: obj[5],
-                contact: obj[6]
+                contact: obj[6],
+                image: obj[7]
             };
 
             properties.push(property);
