@@ -42,7 +42,13 @@ import fetchFileData from './fetch-file.js';
         const readDataButton = document.getElementById('read-data-btn');
         readDataButton.addEventListener('click', e => {
             e.preventDefault();
-            fetchFileData(fileInput, map);
+            
+            try {
+                fetchFileData(fileInput, map);
+            } catch (error) {
+                console.log(error)
+                alert("Ocurrió un error, revisar en consola.")
+            }
         });
         
 
