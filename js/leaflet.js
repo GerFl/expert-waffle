@@ -3,6 +3,7 @@
 //#region Variables and object declarations
 let leases = [];
 let sales = [];
+let houses = [];
 let vertexes = [];
 
 let searchArea;
@@ -33,10 +34,9 @@ let saleIcon = L.icon({
 
 
 function sketchMap(map, properties) {
-
+    houses = properties.filter(x => x.type == "Lease" || x.type == "Sale");
     leases = (properties.filter(x => x.type == "Lease"));
     sales = properties.filter(x => x.type == "Sale");
-    vertexes = properties.filter(x => x.type == "Vertex");
 
     let leasesMapObj = [];
     let salesMapObj = [];
@@ -85,11 +85,13 @@ function sketchMap(map, properties) {
     (salesGroup) ? salesGroup.remove() : '' ;
     salesGroup = L.layerGroup(salesMapObj).addTo(map);
 
+    let area = houses.map((house) => L.latLng(house.latitude, house.longitude));
+    let areaBounds = L.latLngBounds(area);
+    vertexes = [areaBounds.getNorthEast(), areaBounds.getSouthEast(),
+                areaBounds.getSouthWest(), areaBounds.getNorthWest()];
 
     // Polygon
-    vertexes.forEach(vertex => {
-        vertexesMapObj.push([vertex.latitude, vertex.longitude]);
-    });
+    vertexesMapObj = vertexes.map((vertex) => [vertex.lat, vertex.lng]);
 
     (searchArea) ? searchArea.remove() : '' ;
     searchArea = L.polygon(vertexesMapObj).addTo(map);
@@ -103,7 +105,7 @@ function sketchMap(map, properties) {
         "Lease": leasesGroup,
         "Sale": salesGroup
     };
-    
+
     (layerControl) ? layerControl.remove() : '' ;
     layerControl = L.control.layers(null, overlayMaps).addTo(map);
     
