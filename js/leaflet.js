@@ -45,16 +45,11 @@ function sketchMap(map, properties) {
     // Leases markers
     leases.forEach(lease => {
         leasesMapObj.push(
-            L.marker(
-                [lease.latitude, lease.longitude],
-                { icon: leaseIcon }
-            )
+            L.marker([lease.latitude, lease.longitude], { icon: leaseIcon })
             .bindTooltip(`
                 <img class="marker-image" src="${lease.image}" alt="">
-                ${lease.value}
-                <br>
-                ${lease.address}
-                <br>
+                ${lease.value} <br>
+                ${lease.address} <br>
                 ${lease.contact}
             `)
         );
@@ -67,16 +62,11 @@ function sketchMap(map, properties) {
     // Sales markers
     sales.forEach(sale => {
         salesMapObj.push(
-            L.marker(
-                [sale.latitude, sale.longitude],
-                { icon: saleIcon }
-            )
+            L.marker([sale.latitude, sale.longitude], { icon: saleIcon })
             .bindTooltip(`
                 <img class="marker-image" src="${sale.image}" alt="">
-                ${sale.value}
-                <br>
-                ${sale.address}
-                <br>
+                ${sale.value} <br>
+                ${sale.address} <br>
                 ${sale.contact}
             `)
         );
@@ -85,19 +75,30 @@ function sketchMap(map, properties) {
     (salesGroup) ? salesGroup.remove() : '' ;
     salesGroup = L.layerGroup(salesMapObj).addTo(map);
 
+
+    // Polygon
     let area = houses.map((house) => L.latLng(house.latitude, house.longitude));
     let areaBounds = L.latLngBounds(area);
+
     vertexes = [areaBounds.getNorthEast(), areaBounds.getSouthEast(),
                 areaBounds.getSouthWest(), areaBounds.getNorthWest()];
 
-    // Polygon
     vertexesMapObj = vertexes.map((vertex) => [vertex.lat, vertex.lng]);
 
     (searchArea) ? searchArea.remove() : '' ;
     searchArea = L.polygon(vertexesMapObj).addTo(map);
 
     map.fitBounds(searchArea.getBounds());
-    searchArea.bindPopup("Aquí asaltan.");
+    searchArea.bindPopup(`
+        LEASES (${leases.length} properties) <br>
+        Max: $1999 <br>
+        Min: $1999 <br>
+        Avg: $1999 <br> <br>
+        SALES (${sales.length} properties) <br>
+        Max: $1999 <br>
+        Min: $1999 <br>
+        Avg: $1999
+    `);
     
 
     // Layers control
