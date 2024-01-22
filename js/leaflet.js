@@ -36,17 +36,22 @@ function sketchMap(map, properties) {
     let salesMapObj = [];
     let vertexesMapObj = [];
 
+    let valuesLeases = [];
+    let valuesSales = [];
+
     // Leases markers
     leases.forEach(lease => {
         leasesMapObj.push(
             L.marker([lease.latitude, lease.longitude], { icon: leaseIcon })
             .bindTooltip(`
                 <img class="marker-image" src="${lease.image}" alt="">
-                ${lease.value} <br>
+                $${lease.value} <br>
                 ${lease.address} <br>
                 ${lease.contact}
             `)
         );
+
+        (!isNaN(parseInt(lease.value))) ? valuesLeases.push(parseInt(lease.value)) : '';
     });
 
     (leasesGroup) ? leasesGroup.remove() : '' ;
@@ -59,11 +64,13 @@ function sketchMap(map, properties) {
             L.marker([sale.latitude, sale.longitude], { icon: saleIcon })
             .bindTooltip(`
                 <img class="marker-image" src="${sale.image}" alt="">
-                ${sale.value} <br>
+                $${sale.value} <br>
                 ${sale.address} <br>
                 ${sale.contact}
             `)
         );
+
+        (!isNaN(parseInt(sale.value))) ? valuesSales.push(parseInt(sale.value)) : '';
     });
 
     (salesGroup) ? salesGroup.remove() : '' ;
@@ -83,15 +90,14 @@ function sketchMap(map, properties) {
     searchArea = L.polygon(vertexesMapObj).addTo(map);
 
     map.fitBounds(searchArea.getBounds());
+    
     searchArea.bindPopup(`
-        LEASES (${leases.length} properties) <br>
-        Max: $1999 <br>
-        Min: $1999 <br>
-        Avg: $1999 <br> <br>
-        SALES (${sales.length} properties) <br>
-        Max: $1999 <br>
-        Min: $1999 <br>
-        Avg: $1999
+        LEASE (${leases.length} properties) <br>
+        Max: $${Math.max(...valuesLeases) | 0} <br>
+        Min: $${Math.min(...valuesLeases) | 0} <br> <br>
+        SALE (${sales.length} properties) <br>
+        Max: $${Math.max(...valuesSales) | 0} <br>
+        Min: $${Math.min(...valuesSales) | 0} <br>
     `);
     
 
